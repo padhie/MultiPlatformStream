@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div id='home' class='col-lg-6 col-lg-offset-3 box-widget'>
+        <div class='center-block'>
+            <form class="stream-form" action="/" method="post">
+                <div class="stream-form-boxes">
+                    <div class='form-group row'>
+                    </div>
+                </div>
+                <input type="hidden" name="submit" value="1">
+                <button type='submit' class='btn btn-success pull-right'>Starten</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        var currentIndex = 0;
+        var pattern = 
+            "<div class='form-group row'>" +
+                "<div class='col-lg-12'>" +
+                    "<label>Stream {index+}</label>" +
+                "</div>" +
+                "<div class='col-lg-3'>" +
+                    "<select name='platform[{index}]' class='form-control'>" +
+                        "<option value='twitch'>Twitch</option>" +
+                        "<option value='youtube'>Youtube</option>" +
+                    "</select>" +
+                "</div>" +
+                "<div class='col-lg-6'>" +
+                    "<input type='text' name='stream[{index}]' class='form-control' placeholder='Stream'>" +
+                "</div>" +
+                "<div class='col-lg-3'>" +
+                    "<button type='button' class='btn btn-danger pull-right removeStream' onclick='removeStream(this)'>" +
+                        "<span class='glyphicon glyphicon-minus' aria-hidden='true'></span>" +
+                    "</button>" +
+                    "<button type='button' class='btn btn-success pull-right addStream' onclick='addStream()'>" +
+                        "<span class='glyphicon glyphicon-plus' aria-hidden='true'></span>" +
+                    "</button>" +
+                "</div>" +
+            "</div>";
+
+        function addStream() {
+            var _pattern = pattern;
+            var newIndex = currentIndex;
+
+            console.log(newIndex);
+
+            _pattern = _pattern.replace(/\{index\}/g, newIndex).replace(/\{index\+\}/g, (newIndex+1));
+            $('.stream-form-boxes').append(_pattern);
+            currentIndex = (newIndex+1);
+        }
+
+        function removeStream(element) {
+            $(element).parent().parent().remove();
+        }
+
+        $(document).ready(function() {
+            addStream();
+        });
+    </script>
+    
+{% endblock %}

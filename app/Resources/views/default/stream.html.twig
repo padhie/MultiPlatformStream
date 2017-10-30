@@ -1,0 +1,130 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <div class="multiStreamBoxListWrapper col-md-10" >
+        <div class="multiStreamBoxWrapper row" >
+            {% for singleStreamData in streamData %}
+
+                <div class="multiStreamVideo {% if streamData|length == 1 %}singleStream col-md-12{% elseif streamData|length == 2 %}doubleStream  col-md-12{% else %}multiStream  col-md-6{% endif %}" >
+                    {% if singleStreamData.source == 'twitch' %}
+                        <object data="{{ singleStreamData.stream }}" height="100%" width="100%" ></object >
+                    {% elseif singleStreamData.source == 'youtube' %}
+                        <iframe frameborder="0" scrolling="no" width="100%" height="100%" src="{{ singleStreamData.stream }}" ></iframe >
+                    {% endif %}
+                </div >
+
+            {% endfor %}
+            <div class="clearfix"></div>
+        </div >
+        <div class="clearfix"></div>
+    </div >
+
+    <div class="multiStreamChatListWrapper col-md-2" >
+        <div class="multiStreamChatNavi" >
+            {% for singleStreamData in streamData %}
+                <a href="javascript:void(0);" class="btn btn-default btn-custom-simple chatSwitch" data-chatbtn="{{ singleStreamData.channel }}" >{{ singleStreamData.row }}</a >
+            {% endfor %}
+        </div >
+        <div class="multiStreamChat" >
+            {% for singleStreamData in streamData %}
+                <iframe frameborder="0" scrolling="no" width="100%" height="100%" data-chat="{{ singleStreamData.channel }}" class="chat_embed {% if loop.first == false %}hidden{% endif %}" src="{{ singleStreamData.chat }}" ></iframe >
+                {#<iframe data-chat="{{ singleStreamData.channel }}" class="chat_embed {% if loop.first == false %}hidden{% endif %}" src="{{ singleStreamData.chat }}" ></iframe >#}
+            {% endfor %}
+        </div >
+    </div >
+
+    <div class="clearfix"></div>
+{% endblock %}
+
+{% block javascripts %}
+    <script >
+        $(document).ready(function () {
+            var naviHeight = $($(".multiStreamChatNavi")[0]).height();
+            $($(".multiStreamChat")[0]).css("height", "-=" + naviHeight + "px");
+        });
+
+        $(document).ready(function () {
+
+            $(".chatSwitch").each(function () {
+                $(this).off("click");
+                $(this).on("click", function (e) {
+                    var chat = $(this).data("chatbtn");
+
+                    $(".multiStreamChat iframe").each(function () {
+
+                        if ($(this).data("chat") == chat) {
+                            $(this).removeClass("hidden");
+                        } else {
+                            $(this).addClass("hidden");
+                        }
+
+                    });
+                });
+            });
+        });
+    </script >
+{% endblock %}
+
+
+{% block stylesheets %}
+    <style>
+        html {
+            height: 100%;
+        }
+
+        body{
+            min-height: 100%;
+        }
+
+        .streamBox object,
+        .streamBox iframe {
+            height: 249px;
+        }
+
+        .singleStreamBox iframe,
+        .singleStreamBox object {
+            height: 450px;
+        }
+
+        .streamBoxDetail iframe,
+        .streamBoxDetail object {
+            height: 318px;
+        }
+
+        .multiStreamBoxListWrapper {
+            padding: 0;
+            height: 100vh;
+        }
+
+        .multiStreamBoxWrapper {
+            height: 100%;
+            overflow: auto;
+            min-height: 83vh;
+        }
+
+        .singleStream {
+            height: 99%;
+        }
+
+        .multiStreamVideo {
+            padding: 0;
+            height: 49%;
+        }
+
+        .multiStreamChatListWrapper {
+            height: 95vh;
+        }
+
+        .multiStreamChatNavi a {
+            min-width: 48%;
+            margin-bottom: 5px;
+        }
+
+        .multiStreamChat {
+            width: 100%;
+            height: 99%;
+            margin-top: 5px;
+        }
+    </style>
+{% endblock %}
