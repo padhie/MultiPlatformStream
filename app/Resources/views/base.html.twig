@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+
+        <title>{% block title %}MultiPlatformStream{% endblock %}</title>
+
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+
+        <link rel="stylesheet" href="{{ asset('bootstrap/css/bootstrap.min.css') }}" />
+        <link rel="stylesheet" href="{{ asset('css/default.css') }}" />
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body>
+
+    <div class="container-fluid">
+            {% block body %}{% endblock %}
+        </div>
+
+        <script src="{{ asset('jquery/js/jquery-3.2.1.min.js') }}"></script>
+        <script src="{{ asset('bootstrap/js/bootstrap.min.js') }}"></script>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>
