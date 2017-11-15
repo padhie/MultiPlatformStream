@@ -3,7 +3,7 @@
 {% block body %}
 
     <div class="multiStreamBoxListWrapper col-md-10" >
-        <div class="multiStreamBoxWrapper row" >
+        <div class="multiStreamBoxWrapper" >
             {% for singleStreamData in streamData %}
 
                 <div class="multiStreamVideo {% if streamData|length == 1 %}singleStream col-md-12{% elseif streamData|length == 2 %}doubleStream  col-md-12{% else %}multiStream  col-md-6{% endif %}" >
@@ -20,12 +20,14 @@
         <div class="clearfix"></div>
     </div >
 
-    <div class="multiStreamChatListWrapper col-md-2" >
-        <div class="multiStreamChatNavi" >
-            {% for singleStreamData in streamData %}
-                <a href="javascript:void(0);" class="btn btn-default btn-custom-simple chatSwitch" data-chatbtn="{{ singleStreamData.channel }}" >{{ singleStreamData.row }}</a >
-            {% endfor %}
-        </div >
+    <div class="multiStreamChatListWrapper {% if streamData|length == 1 %}singleChatWrapper{% endif %} col-md-2" >
+        {% if streamData|length >= 2 %}
+            <div class="multiStreamChatNavi" >
+                {% for singleStreamData in streamData %}
+                    <a href="javascript:void(0);" class="btn btn-default btn-custom-simple chatSwitch" data-chatbtn="{{ singleStreamData.channel }}" >{{ singleStreamData.row }}</a >
+                {% endfor %}
+            </div >
+        {% endif %}
         <div class="multiStreamChat" >
             {% for singleStreamData in streamData %}
                 <iframe frameborder="0" scrolling="no" width="100%" height="100%" data-chat="{{ singleStreamData.channel }}" class="chat_embed {% if loop.first == false %}hidden{% endif %}" src="{{ singleStreamData.chat }}" ></iframe >
@@ -77,6 +79,10 @@
             min-height: 100%;
         }
 
+        .container-fluid {
+            padding: 0;
+        }
+
         .streamBox object,
         .streamBox iframe {
             height: 249px;
@@ -104,7 +110,7 @@
         }
 
         .singleStream {
-            height: 99%;
+            height: 99% !important;
         }
 
         .multiStreamVideo {
@@ -113,7 +119,8 @@
         }
 
         .multiStreamChatListWrapper {
-            height: 95vh;
+            height: 100vh;
+            padding: 0;
         }
 
         .multiStreamChatNavi a {
